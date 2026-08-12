@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "adaptive_sneak",
+  "version": "${version}",
+  "name": "Adaptive Sneak",
+  "description": "Tap sneak to toggle crouching, or hold it for momentary crouching.",
+  "authors": ["Xogue"],
+  "license": "LGPL-3.0-or-later",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.xogue.adaptivesneak.AdaptiveSneakClient"
+    ]
+  },
+  "mixins": [
+    "adaptive_sneak.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=25"
+  }
+}
