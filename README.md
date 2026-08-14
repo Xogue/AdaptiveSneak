@@ -15,6 +15,11 @@ crouching, or hold it for momentary crouching.
 Run `./gradlew build` on macOS/Linux or `gradlew.bat build` on Windows. The
 built mod JAR is written to `build/libs/`.
 
+## Configuration
+
+The hold threshold defaults to 150 milliseconds. After the first launch, edit
+`config/adaptive_sneak.json` and change `holdThresholdMs` to customize it.
+
 ## License
 
 Copyright (c) 2026 Xogue. Adaptive Sneak is free software licensed under the

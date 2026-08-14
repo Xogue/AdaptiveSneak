@@ -3,6 +3,7 @@
 
 package com.xogue.adaptivesneak.mixin;
 
+import com.xogue.adaptivesneak.AdaptiveSneakConfig;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.KeyEvent;
@@ -24,10 +25,6 @@ public abstract class KeyboardHandlerMixin {
 
     @Unique
     private static final int ACTION_REPEAT = 2;
-
-    /** Slightly shorter than the usual 500 ms keyboard repeat delay. */
-    @Unique
-    private static final long HOLD_THRESHOLD_NANOS = 450_000_000L;
 
     @Shadow
     @Final
@@ -81,7 +78,8 @@ public abstract class KeyboardHandlerMixin {
 
         if (action == ACTION_RELEASE) {
             long heldFor = System.nanoTime() - adaptiveSneak$pressedAt;
-            boolean quickTap = !adaptiveSneak$sawRepeat && heldFor < HOLD_THRESHOLD_NANOS;
+            boolean quickTap = !adaptiveSneak$sawRepeat
+                    && heldFor < AdaptiveSneakConfig.holdThresholdNanos();
 
             if (quickTap) {
                 // A tap toggles the state that existed before this press. Toggle mode

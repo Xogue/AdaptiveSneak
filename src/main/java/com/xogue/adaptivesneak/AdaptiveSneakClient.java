@@ -13,6 +13,7 @@ public final class AdaptiveSneakClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        AdaptiveSneakConfig.load();
         LOGGER.info("Adaptive Sneak initialized");
     }
 }
