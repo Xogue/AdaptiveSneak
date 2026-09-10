@@ -1,0 +1,5 @@
+{
+  "key.adaptive_sneak.configure_indicator": "Configure Sneak Indicator",
+  "screen.adaptive_sneak.indicator.title": "Sneak Indicator Position",
+  "screen.adaptive_sneak.indicator.help": "Drag the icon, then press Esc when finished"
+}

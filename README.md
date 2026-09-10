@@ -20,6 +20,11 @@ built mod JAR is written to `build/libs/`.
 The hold threshold defaults to 150 milliseconds. After the first launch, edit
 `config/adaptive_sneak.json` and change `holdThresholdMs` to customize it.
 
+The HUD indicator shows a standing figure when sneak is inactive and a green
+crouched figure while sneaking. Press `K` in game to open the position editor,
+then drag the indicator wherever you want it. The key can be rebound from the
+standard Controls menu.
+
 ## License
 
 Copyright (c) 2026 Xogue. Adaptive Sneak is free software licensed under the

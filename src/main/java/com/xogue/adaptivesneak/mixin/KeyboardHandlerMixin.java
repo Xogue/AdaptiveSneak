@@ -7,6 +7,8 @@ import com.xogue.adaptivesneak.AdaptiveSneakConfig;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.KeyEvent;
+
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,7 +48,7 @@ public abstract class KeyboardHandlerMixin {
     private long adaptiveSneak$pressedAt;
 
     @Inject(method = "keyPress", at = @At("HEAD"))
-    private void adaptiveSneak$beforeKeyPress(long window, int action, KeyEvent event, CallbackInfo callback) {
+    private void adaptiveSneak$beforeKeyPress(long window, int action, @NonNull KeyEvent event, CallbackInfo callback) {
         if (!minecraft.options.keyShift.matches(event)) {
             return;
         }
@@ -95,7 +97,7 @@ public abstract class KeyboardHandlerMixin {
     }
 
     @Inject(method = "keyPress", at = @At("RETURN"))
-    private void adaptiveSneak$afterKeyPress(long window, int action, KeyEvent event, CallbackInfo callback) {
+    private void adaptiveSneak$afterKeyPress(long window, int action, @NonNull KeyEvent event, CallbackInfo callback) {
         if (action == ACTION_RELEASE && adaptiveSneak$restoreToggleAfterRelease
                 && minecraft.options.keyShift.matches(event)) {
             minecraft.options.toggleCrouch().set(true);
