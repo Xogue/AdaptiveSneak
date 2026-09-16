@@ -109,10 +109,10 @@ public abstract class KeyboardHandlerMixin {
                 } else if (!AdaptiveSneakConfig.doublePressRequired()) {
                     minecraft.options.toggleCrouch().set(!adaptiveSneak$downBeforePress);
                     adaptiveSneak$restoreToggleAfterRelease = true;
-                    adaptiveSneak$doublePressDetected = false;
                 }
             } else {
                 minecraft.options.toggleCrouch().set(false);
+                adaptiveSneak$doublePressDetected = false;
             }
 
             adaptiveSneak$holdTracking = false;

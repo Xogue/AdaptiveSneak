@@ -19,7 +19,7 @@ import java.nio.file.Path;
 public final class AdaptiveSneakConfig {
 
     // CONSTANTS
-    private static final boolean DOUBLE_PRESS_REQUIRED = true;
+    private static final boolean DOUBLE_PRESS_REQUIRED = false;
     private static final long DEFAULT_HOLD_THRESHOLD_MS = 150;
     private static final float DEFAULT_INDICATOR_X = 0.04F;
     private static final float DEFAULT_INDICATOR_Y = 0.72F;

@@ -28,7 +28,7 @@ public final class AdaptiveSneakClient implements ClientModInitializer {
 
         KeyMapping configureIndicator = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key.adaptive_sneak.configure_indicator",
-                InputConstants.Type.KEYSYM,
+                InputConstants.Type.KEYBOARD,
                 InputConstants.KEY_K,
                 KeyMapping.Category.MISC));
 
