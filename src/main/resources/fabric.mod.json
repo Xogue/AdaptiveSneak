@@ -3,13 +3,13 @@
   "id": "adaptive_sneak",
   "version": "${version}",
   "name": "Adaptive Sneak",
-  "description": "Tap sneak to toggle crouching, or hold it for momentary crouching.",
+  "description": "Control how and when sneaking switches between 'toggle' and 'hold' modes.\n\n - Single press the sneak key to toggle crouching. (Disables double press activation)\n - Double press the sneak key to toggle crouching. (Disables single press activation)\n - Hold the sneak key for momentary crouching (will override the toggled state if active).\n\nNOTE: If single-press activation is enabled, the hold threshold determines how long the key must be held to trigger momentary crouching.",
   "authors": ["Xogue"],
   "license": "LGPL-3.0-or-later",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.xogue.adaptivesneak.AdaptiveSneakClient"
+      "com.xogue.adaptivesneak.client.AdaptiveSneakClient"
     ]
   },
   "mixins": [

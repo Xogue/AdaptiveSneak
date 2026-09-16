@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (c) 2026 Xogue
 
-package com.xogue.adaptivesneak;
+package com.xogue.adaptivesneak.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
+import com.xogue.adaptivesneak.client.AdaptiveSneakClient;
+
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -13,16 +15,22 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.concurrent.TimeUnit;
 
 public final class AdaptiveSneakConfig {
+
+    // CONSTANTS
+    private static final boolean DOUBLE_PRESS_REQUIRED = true;
     private static final long DEFAULT_HOLD_THRESHOLD_MS = 150;
     private static final float DEFAULT_INDICATOR_X = 0.04F;
     private static final float DEFAULT_INDICATOR_Y = 0.72F;
+
+    // GSON AND CONFIG PATH
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir()
             .resolve(AdaptiveSneakClient.MOD_ID + ".json");
 
+    // CONFIG VALUES
+    private static boolean doublePressRequired = DOUBLE_PRESS_REQUIRED;
     private static long holdThresholdMs = DEFAULT_HOLD_THRESHOLD_MS;
     private static float indicatorX = DEFAULT_INDICATOR_X;
     private static float indicatorY = DEFAULT_INDICATOR_Y;
@@ -46,6 +54,7 @@ public final class AdaptiveSneakConfig {
                 return;
             }
 
+            doublePressRequired = values.doublePressRequired;
             holdThresholdMs = values.holdThresholdMs;
             indicatorX = clampPosition(values.indicatorX, DEFAULT_INDICATOR_X);
             indicatorY = clampPosition(values.indicatorY, DEFAULT_INDICATOR_Y);
@@ -57,28 +66,11 @@ public final class AdaptiveSneakConfig {
         }
     }
 
-    public static long holdThresholdNanos() {
-        return TimeUnit.MILLISECONDS.toNanos(holdThresholdMs);
-    }
-
-    public static float indicatorX() {
-        return indicatorX;
-    }
-
-    public static float indicatorY() {
-        return indicatorY;
-    }
-
-    public static void setIndicatorPosition(float x, float y) {
-        indicatorX = clampPosition(x, DEFAULT_INDICATOR_X);
-        indicatorY = clampPosition(y, DEFAULT_INDICATOR_Y);
-    }
-
     public static void save() {
         try {
             Files.createDirectories(CONFIG_PATH.getParent());
             try (Writer writer = Files.newBufferedWriter(CONFIG_PATH)) {
-                GSON.toJson(new Values(holdThresholdMs, indicatorX, indicatorY), writer);
+                GSON.toJson(new Values(doublePressRequired, holdThresholdMs, indicatorX, indicatorY), writer);
             }
         } catch (IOException exception) {
             AdaptiveSneakClient.LOGGER.warn("Could not create default config at {}", CONFIG_PATH, exception);
@@ -92,7 +84,32 @@ public final class AdaptiveSneakConfig {
         return Math.max(0.0F, Math.min(1.0F, value));
     }
 
+    // SETTERS
+    public static void setIndicatorPosition(float x, float y) {
+        indicatorX = clampPosition(x, DEFAULT_INDICATOR_X);
+        indicatorY = clampPosition(y, DEFAULT_INDICATOR_Y);
+    }
+
+    // GETTERS
+    public static long holdThresholdMillis() {
+        return holdThresholdMs;
+    }
+
+    public static boolean doublePressRequired() {
+        return doublePressRequired;
+    }
+    
+    public static float indicatorX() {
+        return indicatorX;
+    }
+
+    public static float indicatorY() {
+        return indicatorY;
+    }
+
+    // VALUES CLASS
     private static final class Values {
+        private boolean doublePressRequired = DOUBLE_PRESS_REQUIRED;
         private long holdThresholdMs = DEFAULT_HOLD_THRESHOLD_MS;
         private float indicatorX = DEFAULT_INDICATOR_X;
         private float indicatorY = DEFAULT_INDICATOR_Y;
@@ -100,7 +117,8 @@ public final class AdaptiveSneakConfig {
         private Values() {
         }
 
-        private Values(long holdThresholdMs, float indicatorX, float indicatorY) {
+        private Values(boolean doublePressRequired, long holdThresholdMs, float indicatorX, float indicatorY) {
+            this.doublePressRequired = doublePressRequired;
             this.holdThresholdMs = holdThresholdMs;
             this.indicatorX = indicatorX;
             this.indicatorY = indicatorY;

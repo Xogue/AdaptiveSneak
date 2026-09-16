@@ -3,6 +3,8 @@
 
 package com.xogue.adaptivesneak;
 
+import com.xogue.adaptivesneak.config.AdaptiveSneakConfig;
+
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -37,6 +39,8 @@ public final class SneakIndicator {
         graphics.outline(x, y, SIZE, SIZE, selected ? 0xFFFFFFFF : 0xAA000000);
 
         // A tiny pixel-art player: upright when inactive and visibly crouched when active.
+        // Yes, the visibly crouched looks like a turtle, but its the best I could do :)
+        // An actual icon will replace this once I make one.
         if (sneaking) {
             graphics.fill(x + 6, y + 5, x + 11, y + 10, color);  // head
             graphics.fill(x + 9, y + 10, x + 17, y + 14, color); // bent body

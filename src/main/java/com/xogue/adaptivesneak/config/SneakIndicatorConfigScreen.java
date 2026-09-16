@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (c) 2026 Xogue
 
-package com.xogue.adaptivesneak;
+package com.xogue.adaptivesneak.config;
+
+import org.jspecify.annotations.NonNull;
+
+import com.xogue.adaptivesneak.SneakIndicator;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -18,7 +22,7 @@ public final class SneakIndicatorConfigScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         graphics.fill(0, 0, width, height, 0x88000000);
         graphics.centeredText(font, title, width / 2, 18, 0xFFFFFFFF);
         graphics.centeredText(font, Component.translatable("screen.adaptive_sneak.indicator.help"),
@@ -30,7 +34,7 @@ public final class SneakIndicatorConfigScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+    public boolean mouseClicked(@NonNull MouseButtonEvent event, boolean doubleClick) {
         int x = SneakIndicator.xForWidth(width);
         int y = SneakIndicator.yForHeight(height);
         if (event.button() == 0 && isInside(event.x(), event.y(), x, y)) {
@@ -44,7 +48,7 @@ public final class SneakIndicatorConfigScreen extends Screen {
     }
 
     @Override
-    public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
+    public boolean mouseDragged(@NonNull MouseButtonEvent event, double deltaX, double deltaY) {
         if (dragging && event.button() == 0) {
             updatePosition(event.x() - dragOffsetX, event.y() - dragOffsetY);
             return true;
@@ -53,7 +57,7 @@ public final class SneakIndicatorConfigScreen extends Screen {
     }
 
     @Override
-    public boolean mouseReleased(MouseButtonEvent event) {
+    public boolean mouseReleased(@NonNull MouseButtonEvent event) {
         if (dragging && event.button() == 0) {
             updatePosition(event.x() - dragOffsetX, event.y() - dragOffsetY);
             dragging = false;

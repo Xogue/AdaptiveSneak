@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (c) 2026 Xogue
 
-package com.xogue.adaptivesneak;
+package com.xogue.adaptivesneak.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.xogue.adaptivesneak.SneakIndicator;
+import com.xogue.adaptivesneak.config.AdaptiveSneakConfig;
+import com.xogue.adaptivesneak.config.SneakIndicatorConfigScreen;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
