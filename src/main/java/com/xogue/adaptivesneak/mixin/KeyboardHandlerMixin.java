@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.xogue.adaptivesneak.config.AdaptiveSneakConfig;
-import com.xogue.adaptivesneak.client.AdaptiveSneakClient;
+// import com.xogue.adaptivesneak.client.AdaptiveSneakClient;
 
 @Mixin(KeyboardHandler.class)
 public abstract class KeyboardHandlerMixin {
@@ -38,6 +38,10 @@ public abstract class KeyboardHandlerMixin {
     private boolean adaptiveSneak$doublePressTracking;
     @Unique
     private boolean adaptiveSneak$doublePressDetected;
+    @Unique
+    private boolean adaptiveSneak$downBeforePress;
+    @Unique
+    private boolean adaptiveSneak$sawRepeat;
 
     @Unique
     private boolean adaptiveSneak$restoreToggleAfterRelease;
@@ -56,12 +60,6 @@ public abstract class KeyboardHandlerMixin {
             return;
         }
 
-        AdaptiveSneakClient.LOGGER.info(
-                "Sneak event: action={}, keyDown={}, toggleMode={}",
-                action,
-                minecraft.options.keyShift.isDown(),
-                minecraft.options.toggleCrouch().get());
-
         if (action == ACTION_PRESS) {
             if (minecraft.player == null || minecraft.gui.screen() != null) {
                 return;
@@ -77,6 +75,8 @@ public abstract class KeyboardHandlerMixin {
             }
 
             adaptiveSneak$holdTracking = true;
+            adaptiveSneak$downBeforePress = minecraft.options.keyShift.isDown();
+            adaptiveSneak$sawRepeat = false;
             adaptiveSneak$doublePressTracking = true;
             adaptiveSneak$restoreToggleAfterRelease = false;
             adaptiveSneak$pressedAt = System.currentTimeMillis();
@@ -90,23 +90,24 @@ public abstract class KeyboardHandlerMixin {
             return;
         }
 
+        if (action == ACTION_REPEAT) {
+            adaptiveSneak$sawRepeat = true;
+            return;
+        }
+
         if (action == ACTION_RELEASE) {
             adaptiveSneak$releasedAt = System.currentTimeMillis();
             long heldFor = adaptiveSneak$releasedAt - adaptiveSneak$pressedAt;
-            boolean quickTap = heldFor < AdaptiveSneakConfig.holdThresholdMillis();
-
-            AdaptiveSneakClient.LOGGER.info(
-                    "Sneak released: heldMs={}, quickTap={}, doubleRequired={}, doubleDetected={}",
-                    heldFor,
-                    quickTap,
-                    AdaptiveSneakConfig.doublePressRequired(),
-                    adaptiveSneak$doublePressDetected);
+            boolean quickTap = !adaptiveSneak$sawRepeat
+                    && heldFor < AdaptiveSneakConfig.holdThresholdMillis();
 
             if (quickTap) {
                 if (AdaptiveSneakConfig.doublePressRequired() && adaptiveSneak$doublePressDetected) {
+                    minecraft.options.toggleCrouch().set(!adaptiveSneak$downBeforePress);
                     adaptiveSneak$restoreToggleAfterRelease = true;
                     adaptiveSneak$doublePressDetected = false;
                 } else if (!AdaptiveSneakConfig.doublePressRequired()) {
+                    minecraft.options.toggleCrouch().set(!adaptiveSneak$downBeforePress);
                     adaptiveSneak$restoreToggleAfterRelease = true;
                     adaptiveSneak$doublePressDetected = false;
                 }
